@@ -10,7 +10,7 @@
             });
 
             $scope.removeAction = function (id) {
-                //todo: remove service
+                CrudService.removeMessage(id); // service function
             };
 
 

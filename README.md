@@ -21,3 +21,8 @@ On the server you have to catch this request and make responce actions.
 For showing list of all messages, make service with GET request.
 Also create this GET request on server side.
 Create new partial template with message table and create routing for it.
+
+## #3 lesson: Remove item from database
+make DELETE mysql query in server.js
+create removeMessage(id) function in your service
+run this service function by controller
