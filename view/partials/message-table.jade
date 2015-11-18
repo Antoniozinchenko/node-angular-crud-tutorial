@@ -1,0 +1,16 @@
+div.container
+    h2 All messages
+    table.table.table-striped.table-hover
+        thead
+            tr
+                th(width="25%") Name
+                th(width="50%") Message
+                th(width="25%") Actions
+        tbody.all-messages
+            tr(ng-repeat="msg in allMessage" id="row-{{msg.id}}")
+                td {{msg.username}}
+                td
+                    a(href="/show-message/{{msg.id}}") {{msg.message}}
+                td
+                    button.btn.btn-danger(ng-click="removeAction(msg.id)") Delete
+                    a.btn.btn-primary(href="#") Edit

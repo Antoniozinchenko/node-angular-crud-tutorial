@@ -20,6 +20,9 @@ app.set('view engine', 'jade');
 app.set('views', './view');
 app.use(express.static(__dirname + '/public'));
 
+app.get('/allMessages', function (req, res) {
+    res.render('partials/message-table');
+});
 app.get('/mainTemplate', function (req, res) {
     res.render('partials/index-content');
 });
@@ -48,6 +51,26 @@ app.post('/saveMessage', jsonParser, function (req, res) {
 });
 
 
+app.get('/getAllMessages', function (req, res) {
+    //var client = connection;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.end();
+            return;
+        }
+        connection.query('select * from messagetable', function (err, resp) {
+            if (err) {
+                connection.release();
+                console.log(err);
+                res.json([]).end();
+                return
+            }
+            connection.release();
+            res.json(resp).end();
+        });
+    });
+});
 
 app.get('*', function (req, res) {
     res.render('index');
