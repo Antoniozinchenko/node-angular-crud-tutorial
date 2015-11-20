@@ -1,0 +1,9 @@
+div.container
+    h2 Edit message:
+    h3 User name: {{singleData.username}}
+    input.form-control(type="text", name="username", ng-model="singleData.username")
+    p Message
+    textarea.form-control(name="message", ng-model="singleData.message")
+    div
+        button.btn.btn-primary(ng-click="editAction(singleData)") Update
+        a.btn.btn-warning(href="/show-message/{{singleData.id}}") Show

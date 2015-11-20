@@ -6,6 +6,14 @@
                 controller: 'MessageController',
                 templateUrl: '/allMessages'
             })
+            .when('/show-message/:id', {
+                controller: 'EditController',
+                templateUrl: '/singleView'
+            })
+            .when('/edit-message/:id', {
+                controller: 'EditController',
+                templateUrl: '/editTemplate'
+            })
             .when('/', {
                 controller: 'IndexController',
                 templateUrl: '/mainTemplate'

@@ -27,8 +27,12 @@ app.get('/allMessages', function (req, res) {
 app.get('/mainTemplate', function (req, res) {
     res.render('partials/index-content');
 });
-
-
+app.get('/editTemplate', function (req, res) {
+    res.render('partials/edit-page');
+});
+app.get('/singleView', function (req, res) {
+    res.render('partials/show-single');
+});
 
 
 //add new message request
@@ -85,6 +89,50 @@ app.post('/removeMessage', jsonParser, function (req, res) {
             res.end();
         }
         client.query('delete from messagetable where id=?', [objToSave.id], function (err) {
+            if (err) {
+                console.log(err);
+                client.release();
+                return;
+            }
+            client.release();
+            res.end();
+        });
+    });
+});
+
+// request for getting one message by ID
+app.get('/getSingleMessage/:id', function (req, res) {
+    var id = req.params.id;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.end();
+            return;
+        }
+        connection.query('select * from messagetable  where id=?', [id], function (err, resp) {
+            if (err) {
+                connection.release();
+                console.log(err);
+                res.json([]).end();
+                return
+            }
+            connection.release();
+            res.json(resp).end();
+        });
+    });
+});
+
+// request for updating edited message
+app.post('/updateMessage', jsonParser, function (req, res) {
+    var objToSave = req.body;
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        var queryString = "update messagetable set username='" + objToSave.username + "', message='"+ objToSave.message +"' where id=" + objToSave.id;
+        client.query(queryString, function (err) {
             if (err) {
                 console.log(err);
                 client.release();

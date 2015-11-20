@@ -13,6 +13,15 @@
                         });
                     return deferred.promise;
                 },
+                getOneMessage: function (id) {
+                    var deffer = $q.defer();
+                    $http.get('/getSingleMessage/'+id)
+                        .success(function (data) {
+                            deffer.resolve(data);
+                            console.log('in service: get single');
+                        });
+                    return deffer.promise;
+                },
                 removeMessage: function (id) {
                     var deffer = $q.defer();
                     var objToSave = {id: id};
@@ -22,6 +31,16 @@
                             console.log('in service: removed' + objToSave.id);
                             $('.all-messages #row-'+ objToSave.id).addClass('hide');
 
+                        });
+                    return deffer.promise;
+                },
+                updateMessage: function (id, username, message) {
+                    var deffer = $q.defer();
+                    var objToSave = {id:id, username: username, message: message};
+                    $http.post('/updateMessage', objToSave)
+                        .success(function (data) {
+                            deffer.resolve('ok');
+                            console.log('in service: edited');
                         });
                     return deffer.promise;
                 },

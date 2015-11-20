@@ -13,4 +13,4 @@ div.container
                     a(href="/show-message/{{msg.id}}") {{msg.message}}
                 td
                     button.btn.btn-danger(ng-click="removeAction(msg.id)") Delete
-                    a.btn.btn-primary(href="#") Edit
+                    a.btn.btn-primary(href="/edit-message/{{msg.id}}") Edit
