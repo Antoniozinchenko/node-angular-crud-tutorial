@@ -12,6 +12,25 @@
                             console.log('in service: added');
                         });
                     return deffer.promise;
+                },
+                getAllMessages: function () {
+                    var deffer = $q.defer();
+                    $http.get('/getAllMessages')
+                        .success(function (data) {
+                            deffer.resolve(data);
+                            console.log('got messages');
+                        });
+                    return deffer.promise;
+                },
+                removeMessage: function (userID) {
+                    var objID = {id: userID};
+                    var deffer = $q.defer();
+                    $http.post('/removeMessage', objID)
+                        .success(function () {
+                            deffer.resolve('ok');
+                            console.log('in service: remove');
+                        });
+                    return deffer.promise;
                 }
             }
         }]);

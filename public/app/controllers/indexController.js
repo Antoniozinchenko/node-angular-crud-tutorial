@@ -6,8 +6,11 @@
         .controller('IndexController',['$scope','CrudService', function($scope, CrudService){
 
             $scope.sendMsg = function (name , body) {
-                CrudService.saveMessage(name , body);
-                $scope.clearForm();
+                CrudService.saveMessage(name , body).then(function(){
+                    $scope.clearForm();
+                    alert('End respons');
+                });
+
             };
 
             $scope.clearForm = function () {

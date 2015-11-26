@@ -5,6 +5,10 @@
             .when('/', {
                 controller: 'IndexController',
                 templateUrl: '/mainTemplate'
+            })
+            .when('/show-message', {
+                controller: 'MessagesController',
+                templateUrl: '/showMessagePage'
             });
     }]);
 })();

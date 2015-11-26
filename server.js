@@ -9,7 +9,7 @@ var config = {
     connectionLimit: 20,
     host: "localhost",
     user: "root",
-    password: "321",
+    password: "root",
     database: "crud",
     debug: false
 };
@@ -22,6 +22,10 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/mainTemplate', function (req, res) {
     res.render('partials/index-content');
+});
+
+app.get('/showMessagePage', function (req, res) {
+    res.render('partials/showMessage');
 });
 
 
@@ -38,16 +42,51 @@ app.post('/saveMessage', jsonParser, function (req, res) {
         client.query('insert into messagetable(username, message) values(?, ?)', [objToSave.username, objToSave.message], function (err) {
             if (err) {
                 console.log(err);
-                client.release();
-                return;
+                return client.release();
             }
             client.release();
-            res.end();
+            return res.end();
         });
     });
 });
 
+app.get('/getAllMessages', jsonParser, function (req, res) {
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('select * from messagetable', function (err, resonse) {
+            if (err) {
+                console.log(err);
+                return client.release();
+            }
+            client.release();
 
+            res.json(resonse).end();
+        });
+    });
+});
+
+app.post('/removeMessage', jsonParser, function (req, res) {
+    var userID = req.body.id;
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('delete from messagetable where id=?', [userID], function (err) {
+            if (err) {
+                console.log(err);
+                return client.release();
+            }
+            client.release();
+            return res.end();
+        });
+    });
+});
 
 app.get('*', function (req, res) {
     res.render('index');
