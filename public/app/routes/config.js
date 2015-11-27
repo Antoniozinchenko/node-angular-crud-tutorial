@@ -9,6 +9,20 @@
             .when('/show-message', {
                 controller: 'MessagesController',
                 templateUrl: '/showMessagePage'
+            })
+            .when('/edit/:id', {
+                controller: 'EditMessagesController',
+                templateUrl: '/editMessagePage'
+            })
+            .when('/single/:id', {
+                controller: 'EditMessagesController',
+                templateUrl: '/singlePage'
+            })
+            .when('/404', {
+                templateUrl: '/pageNotFound'
+            })
+            .otherwise({
+                templateUrl: '/pageNotFound'
             });
     }]);
 })();

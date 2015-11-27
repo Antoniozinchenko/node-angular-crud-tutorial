@@ -1,6 +1,5 @@
 div.container
     h2 Show massage page
-    h3 Hello Antonio
 
     div.col-md-6
         table.table
@@ -10,8 +9,10 @@ div.container
                 th Action
 
             tbody
-                tr(ng-repeat="user in allMessages" id="row-message-{{user.id}}")
-                    td {{user.username}}
+                tr(ng-repeat="user in allMessages", id="row-message-{{user.id}}")
+                    td
+                        a(href="/single/{{user.id}}") {{user.username}}
                     td {{user.message}}
                     td
                         button.btn.btn-danger(ng-click="removeMsg(user.id)") Remove
+                        a.btn.btn-warning(href="/edit/{{user.id}}") Edit

@@ -28,6 +28,18 @@ app.get('/showMessagePage', function (req, res) {
     res.render('partials/showMessage');
 });
 
+app.get('/editMessagePage', function (req, res) {
+    res.render('partials/edit');
+});
+
+app.get('/singlePage', function (req, res) {
+    res.render('partials/singlePage');
+});
+
+app.get('/pageNotFound', function (req, res) {
+    res.render('partials/404');
+});
+
 
 
 
@@ -87,6 +99,73 @@ app.post('/removeMessage', jsonParser, function (req, res) {
         });
     });
 });
+
+app.get('/getMessage/:id', function (req, res) {
+    var userId = req.params.id;
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('select * from messagetable where id=?', userId, function (err, resonse) {
+            if (err) {
+                console.log(err);
+                return client.release();
+            }
+            client.release();
+
+            res.json(resonse).end();
+        });
+    });
+});
+
+app.post('/updateMessage', jsonParser, function (req, res) {
+
+    var userId = req.body.id,
+        userName = req.body.username,
+        message = req.body.message;
+
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('update messagetable set username=?, message=? where id=? ', [userName, message, userId], function (err) {
+            if (err) {
+                console.log(err);
+                return client.release();
+            }
+            client.release();
+            return res.end();
+        });
+    });
+});
+
+app.get('/singlePage/:id', function (req, res) {
+    var userId = req.params.id;
+
+    console.log('single start: '+userId);
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('select * from messagetable where id=?', userId, function (err, resonse) {
+            if (err) {
+                console.log(err);
+                return client.release();
+            }
+            client.release();
+
+            res.json(resonse).end();
+        });
+    });
+});
+
+
 
 app.get('*', function (req, res) {
     res.render('index');

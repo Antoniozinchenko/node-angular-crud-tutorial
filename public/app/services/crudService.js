@@ -31,6 +31,30 @@
                             console.log('in service: remove');
                         });
                     return deffer.promise;
+                },
+                getMessage: function (userID) {
+                    var deffer = $q.defer();
+                    $http.get('/getMessage/'+userID)
+                        .success(function (data) {
+                            deffer.resolve(data);
+                            console.log('got messages');
+                        });
+                    return deffer.promise;
+                },
+                updateMessage: function (id, username, message) {
+                    var objData = {
+                        id: id,
+                        username: username,
+                        message: message
+                    };
+
+                    var deffer = $q.defer();
+                    $http.post('/updateMessage', objData)
+                        .success(function () {
+                            deffer.resolve('ok');
+                            console.log('in service: update');
+                        });
+                    return deffer.promise;
                 }
             }
         }]);

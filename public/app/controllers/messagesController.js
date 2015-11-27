@@ -19,9 +19,8 @@
             $scope.removeMsg = function (userID) {
                 CrudService.removeMessage(userID).then(function(){
                     $scope.clearRemovedRow(userID);
-                    alert('Remove saccess !');
+                    alert('Remove success !');
                 });
-
             };
 
         }]);

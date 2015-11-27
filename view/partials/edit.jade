@@ -1,0 +1,9 @@
+div.container
+    h2 Edit message:
+    h3 {{userName}}
+    p User name
+    input(type="text", name="username", ng-model="userName")
+    p Message
+    textarea(type="text", name="message", ng-model="message")
+    div
+        button.btn.btn-primary(ng-click="updateMsg(userId, userName, message)") Update
