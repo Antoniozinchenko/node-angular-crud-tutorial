@@ -20,6 +20,10 @@ app.set('view engine', 'jade');
 app.set('views', './view');
 app.use(express.static(__dirname + '/public'));
 
+// route parameters
+app.get('/allMessages', function (req, res) {
+    res.render('partials/message-table');
+});
 app.get('/mainTemplate', function (req, res) {
     res.render('partials/index-content');
 });
@@ -43,6 +47,7 @@ app.get('/pageNotFound', function (req, res) {
 
 
 
+//add new message request
 app.post('/saveMessage', jsonParser, function (req, res) {
     var objToSave = req.body;
     pool.getConnection(function (err, client) {
@@ -161,6 +166,50 @@ app.get('/singlePage/:id', function (req, res) {
             client.release();
 
             res.json(resonse).end();
+        });
+    });
+});
+
+// get all messages request
+app.get('/getAllMessages', function (req, res) {
+    //var client = connection;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.end();
+            return;
+        }
+        connection.query('select * from messagetable', function (err, resp) {
+            if (err) {
+                connection.release();
+                console.log(err);
+                res.json([]).end();
+                return
+            }
+            connection.release();
+            res.json(resp).end();
+        });
+    });
+});
+
+
+//remove message from database request
+app.post('/removeMessage', jsonParser, function (req, res) {
+    var objToSave = req.body;
+    pool.getConnection(function (err, client) {
+        if (err) {
+            console.log(err);
+            client.release();
+            res.end();
+        }
+        client.query('delete from messagetable where id=?', [objToSave.id], function (err) {
+            if (err) {
+                console.log(err);
+                client.release();
+                return;
+            }
+            client.release();
+            res.end();
         });
     });
 });
